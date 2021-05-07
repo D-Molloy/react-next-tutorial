@@ -2,8 +2,10 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
-
+import Link from 'next/link'
+import Date from '../components/Date'
 // getStaticProps can only be exported from a page. You can’t export it from non-page files.
+// getStaticProps used at build time (not when requested)
 export async function getStaticProps() {
   const allPostsData = getSortedPostsData()
   // return the props object that will be passed to
@@ -31,11 +33,13 @@ export default function Home({ allPostsData }) {
         <ul className={utilStyles.list}>
           {allPostsData.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              {title}
+              <Link href={`/posts/${id}`}>
+                <a>{title}</a>
+              </Link>
               <br />
-              {id}
-              <br />
-              {date}
+              <small className={utilStyles.lightText}>
+                <Date dateString={date} />
+              </small>
             </li>
           ))}
         </ul>
